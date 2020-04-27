@@ -1,0 +1,315 @@
+
+class Animal():
+ def init(self, nombre, peso): 
+        self.nombre = nombre
+        self.peso = peso
+        self.sed = 100
+        self.hambre = 100
+        self.vacunado = "no"
+        self.comio = 0
+        self.auxc = 0
+        self.auxc2 = 0
+        self.auxc3 = 0
+
+ def verificar(self):
+    verif = (self.nombre, self.peso, self.sed, self.hambre, self.vacunado)
+    print(verif)
+
+class Vaca(Animal):
+ def __init__(self, nombre, peso):
+     super().init(nombre, peso)
+
+ def comer(self, cantidad):
+     if(self.hambre < 0):
+         self.hambre = 0 
+
+     if(self.hambre > 0):
+         self.hambre = self.hambre - cantidad
+         self.peso = self.peso + (cantidad/3)
+         self.sed = self.sed + 10
+         if(self.sed > 100):
+            self.sed = 100
+         print(f"{self.nombre} todavia tiene {self.hambre} de hambre")
+
+     if(self.hambre == 0):
+        print(f"{self.nombre} no tiene hambre")
+
+ def beber(self, cantidad):
+     if(self.sed < 0):
+         self.sed = 0 
+
+     if(self.sed > 0):
+         self.sed = self.sed - cantidad
+         self.peso = self.peso - 1
+         print(f"{self.nombre} todavia tiene {self.sed} de hambre")
+
+     if(self.sed == 0):
+        print(f"{self.nombre} no tiene sed")
+
+ def vacunar(self):
+     self.auxc3 = 0
+     if(self.vacunado == "no"):
+         self.vacunado = "si"
+         self.auxc3 = self.auxc3 + 1
+         print(f"{self.nombre} fue vacunado")
+     else: print(f"{self.nombre} ya esta vacunado")
+
+ def caminar(self):
+     self.peso = self.peso - 3
+     if(self.peso <= 200):
+        print(f"{self.nombre} tiene hambre, esta pesando menos de 200 kg")
+
+class Cerdo(Animal):
+ def __init__(self, nombre, peso):
+     super().init(nombre, peso)
+
+ def comer(self, cantidad):
+     if(self.hambre < 0):
+         self.hambre = 0 
+
+     if(self.hambre > 0):
+         self.hambre = self.hambre - cantidad
+         self.peso = self.peso + cantidad
+         self.auxc2 = self.auxc2 + 1
+         print(f"{self.nombre} todavia tiene {self.hambre} de hambre")
+
+     if(self.auxc2 > 2):
+         print(f"como {self.nombre} comio 3 veces sin beber le dio sed")
+         self.sed = self.sed + 10
+     
+     if(self.auxc < cantidad):
+         self.auxc = self.auxc + cantidad
+     
+     if(cantidad > 10):
+        self.hambre = 0
+        print(f"{self.nombre} acaba de comer mas de 1 kg, por lo cual ya no tiene mas hambre")
+
+     if(self.hambre == 0):
+        print(f"{self.nombre} no tiene hambre")
+
+ def beber(self, cantidad):
+     if(self.sed < 0):
+         self.sed = 0 
+
+     if(self.sed > 0):
+         self.sed = self.sed - cantidad
+         self.hambre = self.hambre + 10
+         if(self.hambre > 100):
+             self.hambre = 100
+         self.auxc2 = 0
+         print(f"{self.nombre} todavia tiene {self.sed} de sed")
+
+     if(self.sed == 0):
+        print(f"{self.nombre} no tiene sed")
+
+ def vacunar(self):
+     self.auxc3 = 0
+     self.vacunado = "si"
+     self.auxc3 = self.auxc3 + 1
+     print(f"{self.nombre} fue vacunado")
+
+ def lavezquemascomio(self):
+  print(f"la vez que mas comio fueron {self.auxc}")
+    
+class Gallina(Animal):
+ def __init__(self, nombre, peso):
+     super().init(nombre, peso = 4)
+
+ def comer(self, cantidad):
+     if(self.hambre < 0):
+         self.hambre = 0 
+
+     if(self.hambre > 0):
+         self.hambre = self.hambre - cantidad
+         self.comio = self.comio + 1
+         print(f"{self.nombre} todavia tiene {self.hambre} de hambre")
+         
+     if(self.hambre == 0):
+        print(f"{self.nombre} no tiene hambre")
+
+ def cuantocomio(self):
+     print(f"{self.nombre} comio {self.comio} veces")
+
+ def beber(self, cantidad):
+     if(self.sed < 0):
+         self.sed = 0 
+
+     if(self.sed > 0):
+         self.sed = self.sed - cantidad
+         print(f"{self.nombre} todavia tiene {self.sed} de hambre")
+
+     if(self.sed == 0):
+        print(f"{self.nombre} no tiene sed")
+
+ def vacunar(self):
+    print(f"No conviene vacunar a {self.nombre} por que es una gallina")
+
+class EstacionServicio():
+ def init(self,nombre, cantactual, cantmax, racion):
+     self.nombre = nombre
+     self.cantactual = cantactual
+     self.cantmax = cantmax
+     self.racion = racion
+ 
+class Comedero(EstacionServicio):
+ def __init__(self, nombre, cantactual, cantmax, racion):
+     super().init(nombre, cantactual = cantactual, cantmax = cantmax, racion = 20)
+ 
+ def info(self):
+    verif = (self.nombre, self.cantactual, self.cantmax, self.racion)
+    if(self.cantactual < 10):
+     print(f"El comedero {self.nombre} tiene menos de 10 raciones, necesita ser recargado")
+    print(verif)
+
+ def alimentar(self, Animal, cantidad):
+     self.cantactual = self.cantactual - cantidad
+     cantidad = self.racion * cantidad
+     Animal.comer(cantidad)
+
+ def rellenar(self, cuanto):
+    if(self.cantactual < self.cantmax):
+     self.cantactual = self.cantactual + cuanto
+    if(self.cantactual > self.cantmax):
+     self.cantactual = self.cantmax
+    print(f"El comedero fue rellenado con exito. Tiene {self.cantactual} raciones")
+
+class ComederoInteligente(EstacionServicio):
+ def __init__(self, nombre, cantactual, cantmax, racion):
+     super().init(nombre, cantactual = cantactual, cantmax = cantmax, racion = 1)
+ 
+ def info(self):
+    verif = (self.nombre, self.cantactual, self.cantmax, self.racion)
+    if(self.cantactual < 15):
+     print(f"El comedero {self.nombre} tiene menos de 15 kg, necesita ser recargado")
+    print(verif)
+
+ def alimentar(self, Animal):
+     cantidad = Animal.peso/100
+     self.cantactual = self.cantactual - cantidad
+     Animal.comer(cantidad)
+
+ def rellenar(self, cuanto):
+    if(self.cantactual < self.cantmax):
+     self.cantactual = self.cantactual + cuanto
+    if(self.cantactual > self.cantmax):
+     self.cantactual = self.cantmax
+    print(f"El comedero fue rellenado con exito. Tiene {self.cantactual} kg")
+
+class Bebedero(EstacionServicio):
+ def __init__(self, nombre, cantactual, cantmax, racion):
+     super().init(nombre, cantactual = cantactual, cantmax = cantmax, racion = 1)
+ 
+ def info(self):
+    verif = (self.nombre, self.cantactual, self.cantmax, self.racion)
+    if(self.cantactual <= (self.cantmax - 20)):
+     print(f"El bebedero {self.nombre} necesita ser recargado, ya tomaron 20 veces de el")
+    print(verif)
+
+ def beber(self, Animal):
+     self.cantactual = self.cantactual - 1
+     Animal.beber(100)
+
+ def rellenar(self, cuanto):
+    if(self.cantactual < self.cantmax):
+     self.cantactual = self.cantactual + cuanto
+    if(self.cantactual > self.cantmax):
+     self.cantactual = self.cantmax
+    print(f"El bebedero fue rellenado con exito")    
+
+class Vacunatorio(EstacionServicio):
+ def __init__(self, nombre, cantactual, cantmax, racion):
+     super().init(nombre, cantactual = cantactual, cantmax = cantmax, racion = 1)  
+
+ def info(self):
+    verif = (self.nombre, self.cantactual, self.cantmax, self.racion)
+    if(self.cantactual <= 0):
+     print(f"El vacunatorio {self.nombre} necesita ser recargado")
+    print(verif)
+
+ def rellenar(self):
+    if(self.cantactual < self.cantmax):
+     self.cantactual = self.cantactual + 50
+    if(self.cantactual > self.cantmax):
+     self.cantactual = self.cantmax
+    print(f"El vacunatorio fue rellenado con exito. Tiene {self.cantactual} vacunas")  
+
+ def vacunar(self, animal):
+     animal.vacunar()  
+     if(animal.auxc3 == 1):
+        self.cantactual = self.cantactual - 1
+ 
+vaca = Vaca("lola",500)
+cerdo = Cerdo("pepe",200)
+gallina = Gallina("manta", 0)
+
+vaca.verificar()
+cerdo.verificar()
+gallina.verificar()
+
+#comedero1 = Comedero("Comedero 1" ,30, 30, 0)
+#comedero1.info()
+
+#comederointeligente1 = ComederoInteligente("Comedero inteligente 1" ,30, 30, 0)
+#comederointeligente1.info()
+
+#Bebedero1 = Bebedero("Bebedero 1", 50, 50, 0)
+#Bebedero1.info()
+
+#vacunatorio1 = Vacunatorio("Vacunatorio 1", 50, 50,0)
+#vacunatorio1.info()
+
+#vacunatorio1.vacunar(vaca)
+#vacunatorio1.vacunar(cerdo)
+#vacunatorio1.vacunar(gallina)
+#vacunatorio1.info()
+#vacunatorio1.vacunar(vaca)
+#vacunatorio1.vacunar(cerdo)
+#vacunatorio1.vacunar(gallina)
+#vacunatorio1.info()
+
+#comedero1.alimentar(vaca, 1)
+#comedero1.alimentar(cerdo, 1)
+#comedero1.alimentar(gallina, 1)
+
+#comederointeligente1.alimentar(vaca)
+#comederointeligente1.alimentar(cerdo)
+#comederointeligente1.alimentar(gallina)
+
+#Bebedero1.beber(vaca)
+#Bebedero1.beber(cerdo)
+#Bebedero1.beber(gallina)
+
+#Bebedero1.info()
+
+#vaca.comer(20)
+#vaca.beber(20)
+#vaca.vacunar()
+#vaca.caminar()
+
+#cerdo.comer(20)
+#cerdo.comer(20)
+#cerdo.comer(20)
+#cerdo.beber(20)
+#cerdo.vacunar()
+#cerdo.lavezquemascomio()
+
+#gallina.comer(20)
+#gallina.comer(20)
+#gallina.comer(20)
+#gallina.cuantocomio()
+#gallina.beber(20)
+#gallina.vacunar()
+
+#vaca.verificar()
+#cerdo.verificar()
+#gallina.verificar()
+
+#comedero1.rellenar(30)
+#comederointeligente1.rellenar(30)
+#Bebedero1.rellenar(50)
+#vacunatorio1.rellenar()
+
+#comedero1.info()
+#comederointeligente1.info()
+#Bebedero1.info()
+#vacunatorio1.info()
